@@ -25,12 +25,17 @@ function App() {
   const [newrow, setNewrow] = useState([])
 
   const getUsers = async () => {
+    try {
     const { data } = await axios.get(url);
     // console.log(data);
     setUsers(data.results);
     setLoading(false);
     setValue(data.results[0].name.first);
     setTitle("name");
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   const addUsers = () => {
