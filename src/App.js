@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import mailSvg from "./assets/mail.svg";
-// import manSvg from "./assets/man.svg";
+import manSvg from "./assets/man.svg";
 import womanSvg from "./assets/woman.svg";
-// import manAgeSvg from "./assets/growing-up-man.svg";
+import manAgeSvg from "./assets/growing-up-man.svg";
 import womanAgeSvg from "./assets/growing-up-woman.svg";
 import mapSvg from "./assets/map.svg";
 import phoneSvg from "./assets/phone.svg";
@@ -10,6 +10,7 @@ import padlockSvg from "./assets/padlock.svg";
 import cwSvg from "./assets/cw.svg";
 import Footer from "./components/footer/Footer";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const url = "https://randomuser.me/api/";
 // const defaultImage = "https://randomuser.me/api/portraits/men/75.jpg";
@@ -17,11 +18,9 @@ const url = "https://randomuser.me/api/";
 function App() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
-  // const [name, setName] = useState();
   const [emails, setEmails] = useState([]);
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
-  // const [addUser, setAddUser] = useState(false);
   const [newrow, setNewrow] = useState([])
 
   const getUsers = async () => {
@@ -40,7 +39,7 @@ function App() {
 
   const addUsers = () => {
     if(emails.includes(users[0].email)){
-      alert("user already exists")
+      toast.error("user already exists")
     }else{
       setNewrow([...newrow, [
         {header:users[0].name.first},
@@ -65,6 +64,7 @@ function App() {
 
   return (
     <main>
+       <Toaster/>
       <div className="block bcg-orange">
         <img src={cwSvg} alt="cw" id="cw" />
       </div>
@@ -88,12 +88,12 @@ function App() {
                 <div className="values-list">
                   <button className="icon" data-label="name">
                     <img
-                      src={womanSvg}
+                      src={item.gender === "female" ? womanSvg : manSvg}
                       alt="user"
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("name");
-                        setValue(users[0].name.first);
+                        setValue(item.name.first);
                       }}
                     />
                   </button>
@@ -104,18 +104,18 @@ function App() {
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("email");
-                        setValue(users[0].email);
+                        setValue(item.email);
                       }}
                     />
                   </button>
                   <button className="icon" data-label="age">
                     <img
-                      src={womanAgeSvg}
+                      src={item.gender === "female" ? womanAgeSvg : manAgeSvg}
                       alt="age"
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("age");
-                        setValue(users[0].dob.age);
+                        setValue(item.dob.age);
                       }}
                     />
                   </button>
@@ -126,7 +126,7 @@ function App() {
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("street");
-                        setValue(users[0].location.street.name);
+                        setValue(item.location.street.name);
                       }}
                     />
                   </button>
@@ -137,7 +137,7 @@ function App() {
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("phone");
-                        setValue(users[0].phone);
+                        setValue(item.phone);
                       }}
                     />
                   </button>
@@ -148,7 +148,7 @@ function App() {
                       id="iconImg"
                       onMouseOver={() => {
                         setTitle("password");
-                        setValue(users[0].login.password);
+                        setValue(item.login.password);
                       }}
                     />
                   </button>
